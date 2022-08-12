@@ -1,4 +1,4 @@
-# MetaMask deep link generator
-Simple web app to generate MetaMask deeplinks on the fly
+# Flint deep link generator
+Simple web app to generate Flint deeplinks on the fly
 
-Live demo [here](https://metamask.github.io/metamask-deeplinks/)
+Live demo [here](https://dcspark.github.io/flint-deeplinks/)
