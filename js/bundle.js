@@ -28,34 +28,72 @@ window.handleNetworkSelect = function () {
   const networkId = document.getElementById("network_id")
   const identifier = document.getElementById("identifier")
   if (presetNetwork === "placeholder") return
-  else if (presetNetwork === "cardanoMainnet") {
+  else if (
+    document.getElementById("cardanoCoinType").checked &&
+    presetNetwork === "cardanoMainnet"
+  ) {
     networkId.value = "0"
     identifier.value = ""
-  } else if (presetNetwork === "cardanoTestnet") {
+  } else if (
+    document.getElementById("cardanoCoinType").checked &&
+    presetNetwork === "cardanoTestnet"
+  ) {
     networkId.value = "300"
     identifier.value = ""
+    // TODO: Enable when eth is supported
+    //   } else if (
+    //     document.getElementById("ethereumCoinType").checked &&
+    //     presetNetwork === "milkomedaMainnet"
+    //   ) {
+    //     networkId.value = "500"
+    //     identifier.value = ""
+    //   } else if (
+    //     document.getElementById("ethereumCoinType").checked &&
+    //     presetNetwork === "milkomedaTestnet"
+    //   ) {
+    //     networkId.value = "400"
+    //     identifier.value = ""
   }
 }
 
 window.handleCustomNetworkCheck = function (cb) {
   const networkId = document.getElementById("network_id")
   const identifier = document.getElementById("identifier")
-  const presetNetwork = document.getElementById("networks")
+  const presetCardanoNetworks = document.getElementById("cardanoNetworks")
+  const presetEthereumNetworks = document.getElementById("ethereumNetworks")
   if (cb.checked) {
-    presetNetwork.value = "placeholder"
+    presetCardanoNetworks.value = "placeholder"
+    presetEthereumNetworks.value = "placeholder"
     networkId.value = ""
     identifier.value = ""
-    presetNetwork.setAttribute("disabled", "true")
+    presetCardanoNetworks.setAttribute("disabled", "true")
+    presetEthereumNetworks.setAttribute("disabled", "true")
     networkId.removeAttribute("disabled")
     identifier.removeAttribute("disabled")
     networkId.style.display = "block"
     identifier.style.display = "block"
   } else {
-    presetNetwork.removeAttribute("disabled")
+    presetCardanoNetworks.removeAttribute("disabled")
+    presetEthereumNetworks.removeAttribute("disabled")
     networkId.setAttribute("disabled", "true")
     identifier.setAttribute("disabled", "true")
     networkId.style.display = "none"
     identifier.style.display = "none"
+  }
+}
+
+window.handleCoinTypeCheck = function () {
+  const presetCardanoNetworks = document.getElementById("cardanoNetworks")
+  const presetEthereumNetworks = document.getElementById("ethereumNetworks")
+  if (document.getElementById("cardanoCoinType").checked) {
+    presetCardanoNetworks.style.display = "block"
+    presetEthereumNetworks.style.display = "none"
+    // TODO: Enable when eth is supported
+    //   } else if (document.getElementById("ethereumCoinType").checked) {
+    //     presetCardanoNetworks.style.display = "none"
+    //     presetEthereumNetworks.style.display = "block"
+  } else {
+    alert("Invalid coin type")
   }
 }
 
@@ -64,11 +102,23 @@ window.generateSendUrl = function () {
   const amount = document.getElementById("amount").value
   const networkId = document.getElementById("network_id").value
   const identifier = document.getElementById("identifier").value
+  let coinType
+
+  if (document.getElementById("cardanoCoinType").checked) {
+    coinType = document.getElementById("cardanoCoinType").value
+    // TODO: Enable when eth is supported
+    //   } else if (document.getElementById("ethereumCoinType").checked) {
+    //     coinType = document.getElementById("ethereumCoinType").value
+  } else {
+    alert("Invalid coin type")
+  }
 
   try {
     const url =
       `${BASE_URL}/send?` +
-      "address=" +
+      "coinType=" +
+      coinType +
+      "&address=" +
       address +
       "&amount=" +
       amount +
