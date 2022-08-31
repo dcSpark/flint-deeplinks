@@ -1,7 +1,7 @@
 {
-  "name": "metamask-deeplinks",
+  "name": "flint-deeplinks",
   "version": "1.0.0",
-  "description": "Simple web app to generate metamask deeplinks on the fly",
+  "description": "Simple web app to generate Flint Wallet deeplinks on the fly",
   "main": "index.js",
   "dependencies": {
     "eth-url-parser": "^1.0.3"

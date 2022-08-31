@@ -1,190 +1,162 @@
-window.ethParser = require('eth-url-parser');
+window.ethParser = require("eth-url-parser")
 
-let paramFields = [];
-const BASE_URL = 'https://metamask.app.link';
-window.addNewParam = function() {
-	const ts = Date.now();
+let paramFields = []
+const BASE_URL = "https://flint-wallet.app.link"
 
-	const newKeyField = document.createElement("input");
-	newKeyField.type = "text";
-	newKeyField.name = `key_${ts}`;
-	newKeyField.id = newKeyField.name;
-	newKeyField.placeholder = "Key";
-	newKeyField.classList.add("field");
-	newKeyField.classList.add("short-field");
+function renderUrl(url) {
+  console.log(url)
+  document.getElementById("url").href = url
+  document.getElementById("url").innerText = url
 
-	const newValField = document.createElement("input");
-	newValField.type = "text";
-	newValField.name = `val_${ts}`;
-	newValField.id = newValField.name;
-	newValField.placeholder = "Value";
-	newValField.class = "field short-field";
-	newValField.classList.add("field");
-	newValField.classList.add("short-field");
+  const baseImgUrl =
+    "http://api.qrserver.com/v1/create-qr-code/?color=000000&bgcolor=FFFFFF&data=${DATA}&qzone=1&margin=0&size=250x250&ecc=L"
+  const qrCodeUrl = baseImgUrl.replace("${DATA}", escape(url))
 
-	const row = document.createElement("p");
-	row.classList.add("param-row");
-	row.appendChild(newKeyField);
-	row.appendChild(newValField);
-
-	paramFields.push(ts);
-
-	document.getElementById("params-container").appendChild(row);
+  if (document.getElementById("qr-wrapper").firstElementChild) {
+    const img = document.getElementById("qr-wrapper").firstElementChild
+    img.src = qrCodeUrl
+  } else {
+    const img = document.createElement("img")
+    img.src = qrCodeUrl
+    document.getElementById("qr-wrapper").appendChild(img)
+  }
 }
 
-function renderUrl(url){
-	document.getElementById("url").href = url;
-	document.getElementById("url").innerText = url;
-
-	const baseImgUrl = 'http://api.qrserver.com/v1/create-qr-code/?color=000000&bgcolor=FFFFFF&data=${DATA}&qzone=1&margin=0&size=250x250&ecc=L';
-	const qrCodeUrl = baseImgUrl.replace('${DATA}', escape(url));
-
-	if(document.getElementById("qr-wrapper").firstElementChild){
-		const img = document.getElementById("qr-wrapper").firstElementChild;
-		img.src = qrCodeUrl;
-	}else{
-		const img = document.createElement("img");
-		img.src = qrCodeUrl
-		document.getElementById("qr-wrapper").appendChild(img);
-	}
+window.handleNetworkSelect = function () {
+  const presetNetwork = document.getElementById("networks").value
+  const networkId = document.getElementById("network_id")
+  const identifier = document.getElementById("identifier")
+  if (presetNetwork === "placeholder") return
+  else if (
+    document.getElementById("cardanoCoinType").checked &&
+    presetNetwork === "cardanoMainnet"
+  ) {
+    networkId.value = "0"
+    identifier.value = ""
+  } else if (
+    document.getElementById("cardanoCoinType").checked &&
+    presetNetwork === "cardanoTestnet"
+  ) {
+    networkId.value = "300"
+    identifier.value = ""
+    // TODO: Enable when eth is supported
+    //   } else if (
+    //     document.getElementById("ethereumCoinType").checked &&
+    //     presetNetwork === "milkomedaMainnet"
+    //   ) {
+    //     networkId.value = "500"
+    //     identifier.value = ""
+    //   } else if (
+    //     document.getElementById("ethereumCoinType").checked &&
+    //     presetNetwork === "milkomedaTestnet"
+    //   ) {
+    //     networkId.value = "400"
+    //     identifier.value = ""
+  }
 }
 
-window.generatePaymentUrl = function() {
-	const url_scheme = "ethereum";
-	let prefix = document.getElementById("is_payment").checked
-		? "pay"
-		: null;
-	const target_address = document.getElementById("target_address").value;
-	const chain_id =
-		document.getElementById("chain_id").value !== ""
-			? document.getElementById("chain_id").value
-			: null;
-	const function_name =
-		document.getElementById("function_name").value !== ""
-			? document.getElementById("function_name").value
-			: null;
-	const decimals =
-		document.getElementById("decimals").value !== ""
-			? document.getElementById("decimals").value
-			: 18;
-	let params = {};
-
-	paramFields.forEach(ts => {
-		const key = document.getElementById(`key_${ts}`).value;
-		let val = document.getElementById(`val_${ts}`).value;
-		if (key === "value" && !function_name) {
-			if (val !== "") {
-				val += "e18";
-			}
-		}
-		if (key === "uint256") {
-			if (val !== "") {
-				val += `e${decimals}`;
-			}
-		}
-		if (val !== "") {
-			params[key] = val;
-		}
-	});
-
-	// Per EIP-831 - ENS names should be prefixed with pay-
-	if(target_address.toLowerCase().substr(0,2) !== '0x'){
-		prefix = 'pay';
-	}
-    
-	try {
-         const data = {
-			scheme: url_scheme,
-			prefix,
-			target_address,
-			chain_id,
-			function_name,
-			parameters: params
-		};
-        
-		const url = ethParser.build(data);
-		
-		renderUrl(url.replace('ethereum:',`${BASE_URL}/send/`));
-
-	} catch (e) {
-		alert(e.toString());
-	}	
+window.handleCustomNetworkCheck = function (cb) {
+  const networkId = document.getElementById("network_id")
+  const identifier = document.getElementById("identifier")
+  const presetCardanoNetworks = document.getElementById("cardanoNetworks")
+  const presetEthereumNetworks = document.getElementById("ethereumNetworks")
+  if (cb.checked) {
+    presetCardanoNetworks.value = "placeholder"
+    presetEthereumNetworks.value = "placeholder"
+    networkId.value = ""
+    identifier.value = ""
+    presetCardanoNetworks.setAttribute("disabled", "true")
+    presetEthereumNetworks.setAttribute("disabled", "true")
+    networkId.removeAttribute("disabled")
+    identifier.removeAttribute("disabled")
+    networkId.style.display = "block"
+    identifier.style.display = "block"
+  } else {
+    presetCardanoNetworks.removeAttribute("disabled")
+    presetEthereumNetworks.removeAttribute("disabled")
+    networkId.setAttribute("disabled", "true")
+    identifier.setAttribute("disabled", "true")
+    networkId.style.display = "none"
+    identifier.style.display = "none"
+  }
 }
 
-window.generateDappUrl = function(){
-	const dapp_url = document.getElementById('dapp_url').value.trim();
-	if(dapp_url.search("https://") !== -1){
-		const url = `${BASE_URL}/dapp/`+dapp_url.replace('https://', '');
-		renderUrl(url);
-	} else {
-		alert('The url needs to start with https://');
-	}
-}
-window.generatePaymentChannelRequestUrl = function(){
-	const target = document.getElementById('pc_target').value.trim();
-	const amount = document.getElementById('pc_amount').value.trim();
-	const detail = document.getElementById('pc_detail').value.trim();
-	let url =  `${BASE_URL}/payment/${target}?amount=${amount}`;
-	if(detail){
-		url += `&detail=${encodeURIComponent(detail)}`;
-	}
-	renderUrl(url);
+window.handleCoinTypeCheck = function () {
+  const presetCardanoNetworks = document.getElementById("cardanoNetworks")
+  const presetEthereumNetworks = document.getElementById("ethereumNetworks")
+  if (document.getElementById("cardanoCoinType").checked) {
+    presetCardanoNetworks.style.display = "block"
+    presetEthereumNetworks.style.display = "none"
+    // TODO: Enable when eth is supported
+    //   } else if (document.getElementById("ethereumCoinType").checked) {
+    //     presetCardanoNetworks.style.display = "none"
+    //     presetEthereumNetworks.style.display = "block"
+  } else {
+    alert("Invalid coin type")
+  }
 }
 
+window.generateSendUrl = function () {
+  const address = document.getElementById("address").value
+  const amount = document.getElementById("amount").value
+  const networkId = document.getElementById("network_id").value
+  const identifier = document.getElementById("identifier").value
+  let coinType
 
-window.showView = function(name) {
-	if (name === "dapp") {
-		document.getElementById("dapp-form").style.display = "block";
-	} else if(name === 'payment-request'){
-		document.getElementById("payment-request").style.display = "block";
-		document.getElementById("reset").style.display = "block";
-	} else if(name === 'payment-channel-request'){
-		document.getElementById("payment-channel-request-form").style.display = "block";
-		document.getElementById("reset").style.display = "block";
-	} else if (name === "ether") {
-		document.getElementById("payment-request").style.display = "none";
-		document.getElementById("payment-request-form").style.display = "block";
-		
-		document.getElementById("function_name").style.display = "none";
-		document.getElementById("add_parameter").style.visibility = "hidden";
-		document.getElementById("decimals").style.display = "none";
-		addNewParam();
-		document.getElementById(`key_${paramFields[0]}`).value = "value";
-		document.getElementById(`key_${paramFields[0]}`).style.display = "none";
-		document.getElementById(`val_${paramFields[0]}`).placeholder =
-			"Amount in ETH";
-		document.getElementById(`val_${paramFields[0]}`).type = "number";
-	} else if (name === "erc20") {
-		document.getElementById("payment-request").style.display = "none";
-		document.getElementById("payment-request-form").style.display = "block";
-		document.getElementById("payment-link").style.display = "hidden";
-		document.getElementById("function_name").style.display = "block";
-		document.getElementById("function_name").value = "transfer";
-		document.getElementById("function_name").style.display = "none";
-		document.getElementById("add_parameter").style.visibility = "hidden";
-		addNewParam();
-		document.getElementById(`target_address`).placeholder =
-			"Contract address";
-		document.getElementById(`key_${paramFields[0]}`).value = "address";
-		document.getElementById(`key_${paramFields[0]}`).style.display = "none";
-		document.getElementById(`val_${paramFields[0]}`).placeholder =
-			"Receiver address";
-		setTimeout(_ => {
-			addNewParam();
-			document.getElementById(`key_${paramFields[1]}`).value = "uint256";
-			document.getElementById(`key_${paramFields[1]}`).style.display =
-				"none";
-			document.getElementById(`val_${paramFields[1]}`).type = "number";
-			document.getElementById(`val_${paramFields[1]}`).placeholder =
-				"Amount of tokens";
-		}, 1);
-	}
-	document.getElementById("buttons").style.display = "none";
-	document.getElementById("reset").style.display = "block";
-	
+  if (document.getElementById("cardanoCoinType").checked) {
+    coinType = document.getElementById("cardanoCoinType").value
+    // TODO: Enable when eth is supported
+    //   } else if (document.getElementById("ethereumCoinType").checked) {
+    //     coinType = document.getElementById("ethereumCoinType").value
+  } else {
+    alert("Invalid coin type")
+  }
+
+  try {
+    const url =
+      `${BASE_URL}/send?` +
+      "coinType=" +
+      coinType +
+      "&address=" +
+      address +
+      "&amount=" +
+      amount +
+      "&networkId=" +
+      networkId +
+      "&identifier=" +
+      identifier
+    renderUrl(url)
+  } catch (e) {
+    alert(e.toString())
+  }
+}
+
+window.generateDappUrl = function () {
+  const dapp_url = document.getElementById("dapp_url").value.trim()
+  console.log(dapp_url)
+  if (dapp_url.search("https://") !== -1) {
+    const url = `${BASE_URL}/browse?dappUrl=` + dapp_url
+    renderUrl(url)
+  } else {
+    alert("The url needs to start with https://")
+  }
+}
+
+window.showView = function (name) {
+  if (name === "dapp") {
+    document.getElementById("dapp-form").style.display = "block"
+  } else if (name === "payment-channel-request") {
+    document.getElementById("payment-channel-request-form").style.display =
+      "block"
+    document.getElementById("reset").style.display = "block"
+  } else if (name === "send") {
+    document.getElementById("send-form").style.display = "block"
+  }
+  document.getElementById("buttons").style.display = "none"
+  document.getElementById("reset").style.display = "block"
 }
 
 // This is just a placeholder for proper validation
-window.isValidAddress = function(address) {
-	return address.length === 42 && address.toLowerCase().substr(0, 2) === "0x";
+window.isValidAddress = function (address) {
+  return address.length === 42 && address.toLowerCase().substr(0, 2) === "0x"
 }

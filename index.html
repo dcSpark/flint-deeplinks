@@ -3,10 +3,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Generate MetaMask mobile deeplinks on the fly">
+    <meta name="description" content="Generate Filnt Wallet mobile deeplinks on the fly">
     <meta name="author" content="Bruno Barbieri">
 
-    <title>MetaMask deep link generator</title>
+    <title>Flint Wallet deep link generator</title>
+    <link rel="icon" type="image/x-icon" href="assets/flint-icon.svg">
 
     <!-- Bootstrap core CSS -->
     <link href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -15,10 +16,16 @@
     <link href="https://getbootstrap.com/docs/4.0/examples/album/album.css" rel="stylesheet">
     <script src='js/bundle.js'></script>
     <style>
+        body {
+            overflow-x: hidden;
+        }
         #url {
             margin-top: 20px;
             display: block;
             margin-bottom: 30px;
+            word-break: break-all;
+            padding-left: 5px;
+            padding-right: 5px;
         }
         .field {
             padding: 10px;
@@ -42,11 +49,42 @@
             margin: auto;
             display: block;
         }
-        .param-row { 
-            display: flex;
+
+        .main {
+            padding-top: 82px;
+        }
+
+        .header{
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
         }
         
-        #dapp-form, #payment-request-form, #reset, #payment-request {
+        .header-container{
+            padding: 8px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 100vw;
+        }
+
+        .header > hr {
+            margin: 0;
+        }
+
+        .logo {
+            padding: 10px 40px 10px 40px;
+            width: 200px;
+        }
+
+       #buttons {
+        padding-top: 25px;
+       } 
+        
+        #dapp-form, #send-form, #reset {
             display: none;
         }
      
@@ -74,14 +112,6 @@
             width: 150px;
             margin: auto;
             display: block;
-        }
-        
-        .param-row {
-            display: flex;
-        }
-        
-        #payment-request{
-            margin-bottom: 30px;
         }
 
         #form,
@@ -111,50 +141,58 @@
             margin: auto;
             display: block;
         }
-        .param-row {
-            display: flex;
-        }
 
         #form, #reset {
             display: none;
         }
+
+        .btn-flint {
+            background-color: rgb(255, 97, 0);
+            color: white;
+        }
+        .btn-flint:hover {
+            background-color: rgb(178, 67, 0);
+            color: white;
+        }
+
+        .title {
+            padding-top: 24px;
+            padding-bottom: 16px;
+        }
+
+        .btn-reset {
+            padding: 16px;
+        }
     </style>
 </head>
 
-<body>
 
-    <main role="main">
-        <section class="jumbotron text-center">
+<body>
+    <div class="header">
+        <div class="header-container">
+            <img class="logo" alt="Flint" src="assets/logo.png">
+            <a href='javascript:void(0)' onclick={window.location.reload()} class="btn-reset">Reset</a>
+        </div>
+       <hr> 
+    </div>
+    
+    <main class="main" role="main">
+        <section class="text-center">
             <div class="container">
-                <h1 class="jumbotron-heading">MetaMask deep link generator</h1>
-                <p class="lead text-muted">Generate MetaMask mobile deeplinks on the fly!</p>
-                <br />
-                <br />
+                <h1 class="jumbotron-heading title">Flint Wallet deep link generator</h1>
                 <div id='buttons'>
                     <h4 class="text-muted">What kind of deeplink do you want to generate?</h4>
                     <br />
                     <p>
-                        <a href="#" class="btn btn-success" onclick="showView('dapp')">Open a dapp</a>
-                        <a href="#" class="btn btn-primary" onclick="showView('payment-request')">Payment Request</a>
-                        <a href="#" class="btn btn-warning" onclick="showView('payment-channel-request')">Payment Channel Request</a>
+                        <a href="#" class="btn btn-flint" onclick="showView('dapp')">Open a dapp</a>
+                        <a href="#" class="btn btn-flint" onclick="showView('send')">Send Assets</a>
                     </p>
-                </div>
-                <div id='payment-request'>
-                    <h4 class="text-muted">What kind of payment request do you want to generate?</h4>
-                    <br />
-                    <p>
-                        <a href="#" class="btn btn-primary" onclick="showView('ether')">ETH Payment</a>
-                        <a href="#" class="btn btn-success" onclick="showView('erc20')">ERC20 token transfer</a>
-                    </p>
-                </div>
-                <div id='reset'>
-                    <a href='javascript:void(0)' onclick={window.location.reload()}>Start again</a>
                 </div>
             </div>
         </section>
         <section>
             <div class="container">
-                    <div id='dapp-form'>
+                <div id='dapp-form'>
                     <div class="row">
                         <div class="col-md-2"></div>
                         <div class="col-md-8 text-center">
@@ -168,80 +206,60 @@
                         <div class="col-md-2"></div>
                     </div>
                     <div class="row">
-                        <hr />
-                    </div>
-                    <div class="row">
                         <div class="col-md-12 text-center">
                             <p>
-                                <a href="javascript:void(0)" class="btn btn-success" onclick="generateDappUrl()">Generate URL</a>
+                                <a href="javascript:void(0)" class="btn btn-flint" onclick="generateDappUrl()">Generate URL</a>
                             </p>
                         </div>
                     </div>
                 </div>
-                <div id='payment-request-form'>
+                <div id='send-form'>
                     <div class="row">
                         <div class="col-md-1 text-center"></div>
                         <div class="col-md-5">
-                            <p id='payment-link'>
-                                Is this a payment link?
-                                <input type='checkbox' name='is_payment' id='is_payment' />
+                            <p style="margin-bottom: 4px;">Select coin type:</p>
+                            <input type="radio" id="cardanoCoinType" name="coinType" value="cardano" checked onchange="handleCoinTypeCheck()">
+                            <label for="cardanoCoinType">Cardano</label>
+                            <span>&nbsp;</span>
+                            <input type="radio" id="ethereumCoinType" name="coinType" value="ethereum" onchange="//handleCoinTypeCheck()" disabled>
+                            <label for="ethereumCoinType">Ethereum (Coming soon)</label><br>
+                            <p>
+                                <input autocapitalize="off" class="field long-field" type='text' name='address' id='address' placeholder='Receiver address' />
                             </p>
                             <p>
-                                <input autocapitalize="off" class="field long-field" type='text' name='target_address' id='target_address' placeholder='Target address' />
+                                <input autocapitalize="off" class="field short-field" type='text' name='amount' id='amount' placeholder='Amount' />
+                            </p>
+                            
+                            <p id='customNetwork'>
+                                Use custom network?
+                                <input type='checkbox' name='customNetwork' id='customNetwork' onclick='handleCustomNetworkCheck(this);'/>
                             </p>
                             <p>
-                                <input autocapitalize="off" class="field short-field" type='text' name='decimals' id='decimals' placeholder='Decimals (default 18)' />
+                                <select id="cardanoNetworks" name="networks" class="field short-field" placeholder="Select network" onchange="handleNetworkSelect()">
+                                    <option value="placeholder">Select network</option>
+                                    <option value="cardanoMainnet">Cardano Mainnet</option>
+                                    <option value="cardanoTestnet">Cardano Testnet</option>
+                                </select>
                             </p>
                             <p>
-                                <input autocapitalize="off" class="field short-field" type='text' name='chain_id' id='chain_id' placeholder='Chain id (optional)' />
+                                <select id="ethereumNetworks" name="networks" class="field short-field" placeholder="Select network" onchange="handleNetworkSelect()" style="display: none;">
+                                    <option value="placeholder">Select network</option>
+                                    <option value="milkomedaMainnet">Milkomeda Mainnet</option>
+                                    <option value="milkomedaTestnet">Milkomeda Testnet</option>
+                                </select>
                             </p>
                             <p>
-                                <input autocapitalize="off" class="field long-field" type='text' name='function_name' id='function_name' placeholder='Function name (optional)' />
+                                <input autocapitalize="off" class="field short-field" type='text' name='network_id' id='network_id' placeholder='Network ID' disabled style="display: none;"/>
+                            </p>
+                            <p>
+                                <input autocapitalize="off" class="field long-field" type='text' name='identifier' id='identifier' placeholder='Identifier' disabled style="display: none;"/>
                             </p>
                         </div>
-                        <div class="col-md-5 text-center">
-                            <p>
-                                <a id='add_parameter' href="#" class="" onclick="addNewParam()">+ Add parameter</a>
-                            </p>
-                            <div id="params-container"></div>
-                        </div>
-                        <div class="col-md-1 text-center"></div>
-                    </div>
-                    <div class="row">
-                        <hr />
                     </div>
                     <div class="row">
                         <div class="col-md-12 text-center">
                             <p>
-                                <a href="javascript:void(0)" class="btn btn-success" onclick="generatePaymentUrl()">Generate URL</a>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div id='payment-channel-request-form'>
-                    <div class="row">
-                        <div class="col-md-2 text-center"></div>
-                        <div class="col-md-2 text-center"></div>
-                        <div class="col-md-5">
-                            <p>
-                                <input autocapitalize="off" class="field long-field" type='text' name='pc_target' id='pc_target' placeholder='Target address' />
-                            </p>
-                            <p>
-                                <input autocapitalize="off" class="field long-field" type='text' name='pc_amount' id='pc_amount' placeholder='amount in DAI' />
-                            </p>
-                            <p>
-                                <input autocapitalize="off" class="field long-field" type='text' name='pc_detail' id='pc_detail' placeholder='Detail (optional)' />
-                            </p>
-                        </div>
-                        
-                    </div>
-                    <div class="row">
-                        <hr />
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12 text-center">
-                            <p>
-                                <a href="javascript:void(0)" class="btn btn-success" onclick="generatePaymentChannelRequestUrl()">Generate URL</a>
+                                <a href="javascript:void(0)" class="btn btn-flint" onclick="generateSendUrl()">Generate URL</a>
                             </p>
                         </div>
                     </div>
