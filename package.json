@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dcspark/metamask-deeplinks.git"
+    "url": "git+https://github.com/dcspark/flint-deeplinks.git"
   },
   "author": "",
   "license": "ISC",
