@@ -1,11 +1,9 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 window.ethParser = require("eth-url-parser")
 
-let paramFields = []
 const BASE_URL = "https://flint-wallet.app.link"
 
 function renderUrl(url) {
-  console.log(url)
   document.getElementById("url").href = url
   document.getElementById("url").innerText = url
 
@@ -24,36 +22,39 @@ function renderUrl(url) {
 }
 
 window.handleNetworkSelect = function () {
-  const presetNetwork = document.getElementById("networks").value
   const networkId = document.getElementById("network_id")
   const identifier = document.getElementById("identifier")
-  if (presetNetwork === "placeholder") return
-  else if (
-    document.getElementById("cardanoCoinType").checked &&
-    presetNetwork === "cardanoMainnet"
-  ) {
-    networkId.value = "0"
-    identifier.value = ""
-  } else if (
-    document.getElementById("cardanoCoinType").checked &&
-    presetNetwork === "cardanoTestnet"
-  ) {
-    networkId.value = "300"
-    identifier.value = ""
-    // TODO: Enable when eth is supported
-    //   } else if (
-    //     document.getElementById("ethereumCoinType").checked &&
-    //     presetNetwork === "milkomedaMainnet"
-    //   ) {
-    //     networkId.value = "500"
-    //     identifier.value = ""
-    //   } else if (
-    //     document.getElementById("ethereumCoinType").checked &&
-    //     presetNetwork === "milkomedaTestnet"
-    //   ) {
-    //     networkId.value = "400"
-    //     identifier.value = ""
+  if (document.getElementById("cardanoCoinType").checked) {
+    if (document.getElementById("cardanoNetworks").value === "cardanoMainnet") {
+      networkId.value = "0"
+      identifier.value = ""
+    } else if (
+      document.getElementById("cardanoNetworks").value === "cardanoTestnet"
+    ) {
+      networkId.value = "300"
+      identifier.value = ""
+    } else {
+      networkId.value = ""
+      identifier.value = ""
+    }
   }
+  // TODO: Enable when eth is supported
+  // else if (document.getElementById("ethereumCoinType").checked) {
+  //   if (
+  //     document.getElementById("ethereumNetworks").value === "milkomedaMainnet"
+  //   ) {
+  //     networkId.value = "500"
+  //     identifier.value = ""
+  //   } else if (
+  //     document.getElementById("ethereumNetworks").value === "milkomedaTestnet"
+  //   ) {
+  //     networkId.value = "400"
+  //     identifier.value = ""
+  //   } else {
+  //     networkId.value = ""
+  //     identifier.value = ""
+  //   }
+  // }
 }
 
 window.handleCustomNetworkCheck = function (cb) {
@@ -61,11 +62,11 @@ window.handleCustomNetworkCheck = function (cb) {
   const identifier = document.getElementById("identifier")
   const presetCardanoNetworks = document.getElementById("cardanoNetworks")
   const presetEthereumNetworks = document.getElementById("ethereumNetworks")
+  networkId.value = ""
+  identifier.value = ""
   if (cb.checked) {
     presetCardanoNetworks.value = "placeholder"
     presetEthereumNetworks.value = "placeholder"
-    networkId.value = ""
-    identifier.value = ""
     presetCardanoNetworks.setAttribute("disabled", "true")
     presetEthereumNetworks.setAttribute("disabled", "true")
     networkId.removeAttribute("disabled")
@@ -104,6 +105,10 @@ window.generateSendUrl = function () {
   const identifier = document.getElementById("identifier").value
   let coinType
 
+  document.getElementById("url").innerText = ""
+  document.getElementById("url").href = ""
+  document.getElementById("qr-wrapper").replaceChildren()
+
   if (document.getElementById("cardanoCoinType").checked) {
     coinType = document.getElementById("cardanoCoinType").value
     // TODO: Enable when eth is supported
@@ -111,6 +116,12 @@ window.generateSendUrl = function () {
     //     coinType = document.getElementById("ethereumCoinType").value
   } else {
     alert("Invalid coin type")
+    return
+  }
+
+  if (networkId === "" && identifier === "") {
+    alert("Network not selected")
+    return
   }
 
   try {
@@ -134,7 +145,6 @@ window.generateSendUrl = function () {
 
 window.generateDappUrl = function () {
   const dapp_url = document.getElementById("dapp_url").value.trim()
-  console.log(dapp_url)
   if (dapp_url.search("https://") !== -1) {
     const url = `${BASE_URL}/browse?dappUrl=` + dapp_url
     renderUrl(url)
@@ -146,15 +156,10 @@ window.generateDappUrl = function () {
 window.showView = function (name) {
   if (name === "dapp") {
     document.getElementById("dapp-form").style.display = "block"
-  } else if (name === "payment-channel-request") {
-    document.getElementById("payment-channel-request-form").style.display =
-      "block"
-    document.getElementById("reset").style.display = "block"
   } else if (name === "send") {
     document.getElementById("send-form").style.display = "block"
   }
   document.getElementById("buttons").style.display = "none"
-  document.getElementById("reset").style.display = "block"
 }
 
 // This is just a placeholder for proper validation
