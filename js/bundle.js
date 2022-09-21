@@ -1,7 +1,11 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 window.ethParser = require("eth-url-parser")
 
-const BASE_URL = "https://flint-wallet.app.link"
+const BASE_URL = "https://flint-wallet.app.link";
+
+const lovelaceMultiple = 1000000;
+
+const weiMultiple = 1000000000000000000;
 
 function renderUrl(url) {
   document.getElementById("url").href = url
@@ -26,12 +30,12 @@ window.handleNetworkSelect = function () {
   const identifier = document.getElementById("identifier")
   if (document.getElementById("cardanoCoinType").checked) {
     if (document.getElementById("cardanoNetworks").value === "cardanoMainnet") {
-      networkId.value = "0"
+      networkId.value = "1"
       identifier.value = ""
     } else if (
       document.getElementById("cardanoNetworks").value === "cardanoTestnet"
     ) {
-      networkId.value = "300"
+      networkId.value = "0"
       identifier.value = ""
     } else {
       networkId.value = ""
@@ -43,12 +47,12 @@ window.handleNetworkSelect = function () {
   //   if (
   //     document.getElementById("ethereumNetworks").value === "milkomedaMainnet"
   //   ) {
-  //     networkId.value = "500"
+  //     networkId.value = "2001"
   //     identifier.value = ""
   //   } else if (
   //     document.getElementById("ethereumNetworks").value === "milkomedaTestnet"
   //   ) {
-  //     networkId.value = "400"
+  //     networkId.value = "200101"
   //     identifier.value = ""
   //   } else {
   //     networkId.value = ""
@@ -100,10 +104,18 @@ window.handleCoinTypeCheck = function () {
 
 window.generateSendUrl = function () {
   const address = document.getElementById("address").value
-  const amount = document.getElementById("amount").value
+  if(!address){
+    alert("Address not entered");
+    return;
+  }
+  let amount = Number.parseFloat(document.getElementById("amount").value)
+  if(isNaN(amount)){
+    alert("Invalid amount: Not a number");
+    return;
+  }
   const networkId = document.getElementById("network_id").value
   const identifier = document.getElementById("identifier").value
-  let coinType
+  let coinType;
 
   document.getElementById("url").innerText = ""
   document.getElementById("url").href = ""
@@ -111,6 +123,8 @@ window.generateSendUrl = function () {
 
   if (document.getElementById("cardanoCoinType").checked) {
     coinType = document.getElementById("cardanoCoinType").value
+
+  
     // TODO: Enable when eth is supported
     //   } else if (document.getElementById("ethereumCoinType").checked) {
     //     coinType = document.getElementById("ethereumCoinType").value
@@ -123,6 +137,9 @@ window.generateSendUrl = function () {
     alert("Network not selected")
     return
   }
+  console.log("Amount:",amount)
+  amount *= coinType === 'cardano' ? lovelaceMultiple : weiMultiple;
+  console.log("Amount:",amount)
 
   try {
     const url =

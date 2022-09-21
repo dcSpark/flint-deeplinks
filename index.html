@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -19,6 +20,7 @@
         body {
             overflow-x: hidden;
         }
+
         #url {
             margin-top: 20px;
             display: block;
@@ -27,23 +29,27 @@
             padding-left: 5px;
             padding-right: 5px;
         }
+
         .field {
             padding: 10px;
             font-size: 17px;
             border-radius: 5px;
             border: 1px solid #CACACA;
         }
+
         .short-field {
             flex: 1;
             display: flex;
         }
 
-        .short-field:first-child{
+        .short-field:first-child {
             margin-right: 15px;
         }
+
         .long-field {
-            width: 100%; 
+            width: 100%;
         }
+
         .center {
             width: 150px;
             margin: auto;
@@ -54,7 +60,7 @@
             padding-top: 82px;
         }
 
-        .header{
+        .header {
             width: 100%;
             position: fixed;
             top: 0;
@@ -63,8 +69,8 @@
             background-color: white;
             z-index: 2;
         }
-        
-        .header-container{
+
+        .header-container {
             padding: 8px;
             display: flex;
             flex-direction: row;
@@ -72,7 +78,7 @@
             width: 100vw;
         }
 
-        .header > hr {
+        .header>hr {
             margin: 0;
         }
 
@@ -81,34 +87,36 @@
             width: 200px;
         }
 
-       #buttons {
-        padding-top: 25px;
-       } 
-        
-        #dapp-form, #send-form, #reset {
+        #buttons {
+            padding-top: 25px;
+        }
+
+        #dapp-form,
+        #send-form,
+        #reset {
             display: none;
         }
-     
+
         .field {
             padding: 10px;
             font-size: 17px;
             border-radius: 5px;
             border: 1px solid #CACACA;
         }
-        
+
         .short-field {
             flex: 1;
             display: flex;
         }
-        
+
         .short-field:first-child {
             margin-right: 15px;
         }
-        
+
         .long-field {
             width: 100%;
         }
-        
+
         .center {
             width: 150px;
             margin: auto;
@@ -120,30 +128,35 @@
         #reset {
             display: none;
         }
+
         .field {
             padding: 10px;
             font-size: 17px;
             border-radius: 5px;
             border: 1px solid #CACACA;
         }
+
         .short-field {
             flex: 1;
             display: flex;
         }
 
-        .short-field:first-child{
+        .short-field:first-child {
             margin-right: 15px;
         }
+
         .long-field {
             width: 100%;
         }
+
         .center {
             width: 150px;
             margin: auto;
             display: block;
         }
 
-        #form, #reset {
+        #form,
+        #reset {
             display: none;
         }
 
@@ -151,6 +164,7 @@
             background-color: rgb(255, 97, 0);
             color: white;
         }
+
         .btn-flint:hover {
             background-color: rgb(178, 67, 0);
             color: white;
@@ -174,9 +188,9 @@
             <img class="logo" alt="Flint" src="assets/logo.png">
             <a href='javascript:void(0)' onclick={window.location.reload()} class="btn-reset">Reset</a>
         </div>
-       <hr> 
+        <hr>
     </div>
-    
+
     <main class="main" role="main">
         <section class="text-center">
             <div class="container">
@@ -198,18 +212,20 @@
                         <div class="col-md-2"></div>
                         <div class="col-md-8 text-center">
                             <p>
-                                Enter your dApp url: 
+                                Enter your dApp url:
                             </p>
                             <p>
-                                <input autocapitalize="off" class="field long-field" type='text' name='dapp_url' id='dapp_url' placeholder='For ex. https://uniswap.exchange' />
+                                <input autocapitalize="off" class="field long-field" type='text' name='dapp_url'
+                                    id='dapp_url' placeholder='For ex. https://uniswap.exchange' />
                             </p>
-                        </div>                        
+                        </div>
                         <div class="col-md-2"></div>
                     </div>
                     <div class="row">
                         <div class="col-md-12 text-center">
                             <p>
-                                <a href="javascript:void(0)" class="btn btn-flint" onclick="generateDappUrl()">Generate URL</a>
+                                <a href="javascript:void(0)" class="btn btn-flint" onclick="generateDappUrl()">Generate
+                                    URL</a>
                             </p>
                         </div>
                     </div>
@@ -219,67 +235,104 @@
                         <div class="col-md-1 text-center"></div>
                         <div class="col-md-5">
                             <p style="margin-bottom: 4px;">Select coin type:</p>
-                            <input type="radio" id="cardanoCoinType" name="coinType" value="cardano" checked onchange="handleCoinTypeCheck()">
+                            <input type="radio" id="cardanoCoinType" name="coinType" value="cardano" checked
+                                onchange="handleCoinTypeCheck()">
                             <label for="cardanoCoinType">Cardano</label>
                             <span>&nbsp;</span>
-                            <input type="radio" id="ethereumCoinType" name="coinType" value="ethereum" onchange="//handleCoinTypeCheck()" disabled>
-                            <label for="ethereumCoinType">Ethereum (Coming soon)</label><br>
+                            <input type="radio" id="ethereumCoinType" name="coinType" value="ethereum"
+                                onchange="//handleCoinTypeCheck()" disabled>
+                            <label for="ethereumCoinType">Milkomeda (Coming soon)</label><br>
                             <p>
-                                <input autocapitalize="off" class="field long-field" type='text' name='address' id='address' placeholder='Receiver address' />
+                                <input autocapitalize="off" class="field long-field" type='text' name='address'
+                                    id='address' placeholder='Receiver address' />
                             </p>
                             <p>
-                                <input autocapitalize="off" class="field short-field" type='text' name='amount' id='amount' placeholder='Amount' />
+                                <script>
+                                    const regex = /^\d+(\.\d{0,6})?$/
+                                    function validateAmount(e) {
+
+                                        var currentValue = e.target.value;
+                                        
+                                        if (!currentValue.match(regex)){
+                                            e.target.value = lastValue;
+                                        }
+                                        else
+                                            {lastValue = currentValue;}
+                                    }
+                                </script>
+                                Amount (in ADA)
+                                <input 
+                                    class="field short-field" 
+                                    type='number' 
+                                    name='amount'
+                                    id='amount' 
+                                    placeholder='Amount' 
+                                    inputmode="decimal"
+                                    step=".000001"
+                                    pattern="^\d+(\.\d{0,6})?$"
+                                    oninput="validateAmount(event)"
+                                    />
                             </p>
-                            
-                            <p id='customNetwork'>
-                                Use custom network?
-                                <input type='checkbox' name='customNetwork' id='customNetwork' onclick='handleCustomNetworkCheck(this);'/>
+
+                            <p id='customNetwork' hidden>
+                                Use custom network? (Coming soon)
+                                <input disabled type='checkbox' name='customNetwork' id='customNetwork'
+                                    onclick='handleCustomNetworkCheck(this);' />
                             </p>
+
                             <p>
-                                <select id="cardanoNetworks" name="networks" class="field short-field" placeholder="Select network" onchange="handleNetworkSelect()">
+                                <select id="cardanoNetworks" name="networks" class="field short-field"
+                                    placeholder="Select network" onchange="handleNetworkSelect()">
                                     <option value="placeholder">Select network</option>
                                     <option value="cardanoMainnet">Cardano Mainnet</option>
                                     <option value="cardanoTestnet">Cardano Testnet</option>
                                 </select>
                             </p>
                             <p>
-                                <select id="ethereumNetworks" name="networks" class="field short-field" placeholder="Select network" onchange="handleNetworkSelect()" style="display: none;">
+                                <select id="ethereumNetworks" name="networks" class="field short-field"
+                                    placeholder="Select network" onchange="handleNetworkSelect()"
+                                    style="display: none;">
                                     <option value="placeholder">Select network</option>
                                     <option value="milkomedaMainnet">Milkomeda Mainnet</option>
                                     <option value="milkomedaTestnet">Milkomeda Testnet</option>
                                 </select>
                             </p>
                             <p>
-                                <input autocapitalize="off" class="field short-field" type='text' name='network_id' id='network_id' placeholder='Network ID' disabled style="display: none;"/>
+                                <input autocapitalize="off" class="field short-field" type='text' name='network_id'
+                                    id='network_id' placeholder='Network ID' disabled style="display: none;" />
                             </p>
                             <p>
-                                <input autocapitalize="off" class="field long-field" type='text' name='identifier' id='identifier' placeholder='Identifier' disabled style="display: none;"/>
+                                <input autocapitalize="off" class="field long-field" type='text' name='identifier'
+                                    id='identifier' placeholder='Identifier' disabled style="display: none;" />
                             </p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12 text-center">
                             <p>
-                                <a href="javascript:void(0)" class="btn btn-flint" onclick="generateSendUrl()">Generate URL</a>
+                                <a href="javascript:void(0)" class="btn btn-flint" onclick="generateSendUrl()">Generate
+                                    URL</a>
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12 text-center">
-                <a id='url' ></a>
-                <p id='qr-wrapper'></p>
             </div>
-        </div>
-      </section>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <a id='url'></a>
+                    <p id='qr-wrapper'></p>
+                </div>
+            </div>
+        </section>
     </main>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
     <script>
         window.jQuery || document.write('<script src="https://getbootstrap.com/docs/4.0/assets/js/vendor/jquery-slim.min.js"><\/script>')
     </script>
