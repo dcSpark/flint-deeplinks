@@ -138,7 +138,7 @@ window.generateSendUrl = function () {
   }
 
   amount *= coinType === 'cardano' ? lovelaceMultiple : weiMultiple;
-
+  const intAmount = BigInt(amount).toString();
 
   try {
     const url =
@@ -148,7 +148,7 @@ window.generateSendUrl = function () {
       "&address=" +
       address +
       "&amount=" +
-      amount +
+      intAmount +
       "&networkId=" +
       networkId +
       "&identifier=" +

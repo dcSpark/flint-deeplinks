@@ -137,9 +137,9 @@ window.generateSendUrl = function () {
     alert("Network not selected")
     return
   }
-  console.log("Amount:",amount)
+
   amount *= coinType === 'cardano' ? lovelaceMultiple : weiMultiple;
-  console.log("Amount:",amount)
+  const intAmount = BigInt(amount).toString();
 
   try {
     const url =
@@ -149,7 +149,7 @@ window.generateSendUrl = function () {
       "&address=" +
       address +
       "&amount=" +
-      amount +
+      intAmount +
       "&networkId=" +
       networkId +
       "&identifier=" +
