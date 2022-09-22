@@ -30,15 +30,15 @@ window.handleNetworkSelect = function () {
   if (document.getElementById("cardanoCoinType").checked) {
     if (document.getElementById("cardanoNetworks").value === "cardanoMainnet") {
       networkId.value = "1"
-      identifier.value = ""
+      identifier.value = "default"
     } else if (
       document.getElementById("cardanoNetworks").value === "cardanoTestnet"
     ) {
       networkId.value = "0"
-      identifier.value = ""
+      identifier.value = "default"
     } else {
       networkId.value = ""
-      identifier.value = ""
+      identifier.value = "default"
     }
   }
   // TODO: Enable when eth is supported
