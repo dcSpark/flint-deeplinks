@@ -162,7 +162,7 @@ window.generateSendUrl = function () {
 window.generateDappUrl = function () {
   const dapp_url = document.getElementById("dapp_url").value.trim()
   if (dapp_url.search("https://") !== -1) {
-    const url = `${BASE_URL}/browse?dappUrl=` + dapp_url
+    const url = `${BASE_URL}/browse?dappUrl=` + encodeURIComponent(dapp_url);
     renderUrl(url)
   } else {
     alert("The url needs to start with https://")
