@@ -248,13 +248,11 @@
                         <div class="col-md-5">
                       
                             <p style="margin-bottom: 4px;">Select coin type:</p>
-                            <input type="radio" id="cardanoCoinType" name="coinType" value="cardano" checked
-                                onchange="handleCoinTypeCheck()">
-                            <label for="cardanoCoinType">Cardano</label>
+                            <input type="radio" id="cardanoCoinTypeSend" name="coinTypeSend" value="cardano" checked onchange="handleCoinTypeCheck()">
+                            <label for="cardanoCoinTypeSend">Cardano</label>
                             <span>&nbsp;</span>
-                            <input type="radio" id="ethereumCoinType" name="coinType" value="ethereum"
-                                onchange="//handleCoinTypeCheck()" disabled>
-                            <label for="ethereumCoinType">Milkomeda (Coming soon)</label><br>
+                            <input type="radio" id="ethereumCoinTypeSend" name="coinTypeSend" value="ethereum" onchange="//handleCoinTypeCheck()" disabled>
+                            <label for="ethereumCoinTypeSend">Milkomeda (Coming soon)</label><br>
                             <p>
                                 <input autocapitalize="off" class="field long-field" type='text' name='address'
                                     id='address' placeholder='Receiver address' />
@@ -294,29 +292,24 @@
                             </p>
 
                             <p>
-                                <select id="cardanoNetworks" name="networks" class="field short-field"
-                                    placeholder="Select network" onchange="handleNetworkSelect()">
+                                <select id="cardanoNetworksSend" name="networks" class="field short-field" placeholder="Select network" onchange="handleNetworkSelect()">
                                     <option value="placeholder">Select network</option>
                                     <option value="cardanoMainnet">Cardano Mainnet</option>
                                     <option value="cardanoTestnet">Cardano Testnet</option>
                                 </select>
                             </p>
                             <p>
-                                <select id="ethereumNetworks" name="networks" class="field short-field"
-                                    placeholder="Select network" onchange="handleNetworkSelect()"
-                                    style="display: none;">
+                                <select id="ethereumNetworksSend" name="networks" class="field short-field" placeholder="Select network" onchange="handleNetworkSelect()" style="display: none;">
                                     <option value="placeholder">Select network</option>
                                     <option value="milkomedaMainnet">Milkomeda Mainnet</option>
                                     <option value="milkomedaTestnet">Milkomeda Testnet</option>
                                 </select>
                             </p>
                             <p>
-                                <input autocapitalize="off" class="field short-field" type='text' name='network_id'
-                                    id='network_id' placeholder='Network ID' disabled style="display: none;" />
+                                <input autocapitalize="off" class="field short-field" type='text' name='networkIdSend' id='networkIdSend' placeholder='Network ID' disabled style="display: none;"/>
                             </p>
                             <p>
-                                <input autocapitalize="off" class="field long-field" type='text' name='identifier'
-                                    id='identifier' placeholder='Identifier' disabled style="display: none;" />
+                                <input autocapitalize="off" class="field long-field" type='text' name='identifierSend' id='identifierSend' placeholder='Identifier' disabled style="display: none;"/>
                             </p>
                         </div>
                     </div>

@@ -25,15 +25,23 @@ function renderUrl(url) {
 }
 
 window.handleNetworkSelect = function () {
-  const networkId = document.getElementById("network_id")
-  const identifier = document.getElementById("identifier")
-  if (document.getElementById("cardanoCoinType").checked) {
-    if (document.getElementById("cardanoNetworks").value === "cardanoMainnet") {
+  let activeForm = ""
+  if (document.getElementById("send-form").style.display == "block") {
+    activeForm = "Send"
+  } else if (document.getElementById("sign-form").style.display == "block") {
+    activeForm = "Sign"
+  }
+
+  const networkId = document.getElementById(`networkId${activeForm}`)
+  const identifier = document.getElementById(`identifier${activeForm}`)
+  if (document.getElementById(`cardanoCoinType${activeForm}`).checked) {
+    const networkValue = document.getElementById(
+      `cardanoNetworks${activeForm}`
+    ).value
+    if (networkValue === "cardanoMainnet") {
       networkId.value = "1"
       identifier.value = "default"
-    } else if (
-      document.getElementById("cardanoNetworks").value === "cardanoTestnet"
-    ) {
+    } else if (networkValue === "cardanoTestnet") {
       networkId.value = "0"
       identifier.value = "default"
     } else {
@@ -42,15 +50,14 @@ window.handleNetworkSelect = function () {
     }
   }
   // TODO: Enable when eth is supported
-  // else if (document.getElementById("ethereumCoinType").checked) {
-  //   if (
-  //     document.getElementById("ethereumNetworks").value === "milkomedaMainnet"
-  //   ) {
+  // else if (document.getElementById(`ethereumCoinType${activeForm}`).checked) {
+  //   const networkValue = document.getElementById(
+  //     `ethereumNetworks${activeForm}`
+  //   ).value
+  //   if (networkValue === "milkomedaMainnet") {
   //     networkId.value = "2001"
   //     identifier.value = ""
-  //   } else if (
-  //     document.getElementById("ethereumNetworks").value === "milkomedaTestnet"
-  //   ) {
+  //   } else if (networkValue === "milkomedaTestnet") {
   //     networkId.value = "200101"
   //     identifier.value = ""
   //   } else {
@@ -61,10 +68,20 @@ window.handleNetworkSelect = function () {
 }
 
 window.handleCustomNetworkCheck = function (cb) {
-  const networkId = document.getElementById("network_id")
-  const identifier = document.getElementById("identifier")
-  const presetCardanoNetworks = document.getElementById("cardanoNetworks")
-  const presetEthereumNetworks = document.getElementById("ethereumNetworks")
+  let activeForm = ""
+  if (document.getElementById("send-form").style.display == "block") {
+    activeForm = "Send"
+  } else if (document.getElementById("sign-form").style.display == "block") {
+    activeForm = "Sign"
+  }
+  const networkId = document.getElementById(`networkId${activeForm}`)
+  const identifier = document.getElementById(`identifier${activeForm}`)
+  const presetCardanoNetworks = document.getElementById(
+    `cardanoNetworks${activeForm}`
+  )
+  const presetEthereumNetworks = document.getElementById(
+    `ethereumNetworks${activeForm}`
+  )
   networkId.value = ""
   identifier.value = ""
   if (cb.checked) {
@@ -87,15 +104,25 @@ window.handleCustomNetworkCheck = function (cb) {
 }
 
 window.handleCoinTypeCheck = function () {
-  const presetCardanoNetworks = document.getElementById("cardanoNetworks")
-  const presetEthereumNetworks = document.getElementById("ethereumNetworks")
-  if (document.getElementById("cardanoCoinType").checked) {
+  let activeForm = ""
+  if (document.getElementById("send-form").style.display == "block") {
+    activeForm = "Send"
+  } else if (document.getElementById("sign-form").style.display == "block") {
+    activeForm = "Sign"
+  }
+  const presetCardanoNetworks = document.getElementById(
+    `cardanoNetworks${activeForm}`
+  )
+  const presetEthereumNetworks = document.getElementById(
+    `ethereumNetworks${activeForm}`
+  )
+  if (document.getElementById(`cardanoCoinType${activeForm}`).checked) {
     presetCardanoNetworks.style.display = "block"
     presetEthereumNetworks.style.display = "none"
     // TODO: Enable when eth is supported
-    //   } else if (document.getElementById("ethereumCoinType").checked) {
-    //     presetCardanoNetworks.style.display = "none"
-    //     presetEthereumNetworks.style.display = "block"
+    // } else if (document.getElementById(`ethereumCoinType${activeForm}`).checked) {
+    //   presetCardanoNetworks.style.display = "none"
+    //   presetEthereumNetworks.style.display = "block"
   } else {
     alert("Invalid coin type")
   }
@@ -112,21 +139,17 @@ window.generateSendUrl = function () {
     alert("Invalid amount: Not a number");
     return;
   }
-  const networkId = document.getElementById("network_id").value
-  const identifier = document.getElementById("identifier").value
-  let coinType;
+  const networkId = document.getElementById("networkIdSend").value
+  const identifier = document.getElementById("identifierSend").value
+  let coinType
 
   document.getElementById("url").innerText = ""
-  document.getElementById("url").href = ""
-  document.getElementById("qr-wrapper").replaceChildren()
 
-  if (document.getElementById("cardanoCoinType").checked) {
-    coinType = document.getElementById("cardanoCoinType").value
-
-  
+  if (document.getElementById("cardanoCoinTypeSend").checked) {
+    coinType = document.getElementById("cardanoCoinTypeSend").value
     // TODO: Enable when eth is supported
-    //   } else if (document.getElementById("ethereumCoinType").checked) {
-    //     coinType = document.getElementById("ethereumCoinType").value
+    // } else if (document.getElementById("ethereumCoinTypeSend").checked) {
+    //   coinType = document.getElementById("ethereumCoinTypeSend").value
   } else {
     alert("Invalid coin type")
     return
