@@ -91,9 +91,7 @@
             padding-top: 25px;
         }
 
-        #dapp-form,
-        #send-form,
-        #reset {
+        #dapp-form, #send-form, #sign-form, #reset {
             display: none;
         }
 
@@ -206,6 +204,7 @@
                     <p>
                         <a href="#" class="btn btn-flint" onclick="showView('dapp')">Open a dapp</a>
                         <a href="#" class="btn btn-flint" onclick="showView('send')">Payment Link</a>
+                        <a href="#" class="btn btn-flint" onclick="showView('sign')">Sign Transaction</a>
                     </p>
                 </div>
             </div>
@@ -318,6 +317,57 @@
                             <p>
                                 <a href="javascript:void(0)" class="btn btn-flint" onclick="generateSendUrl()">Generate
                                     URL</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div id='sign-form'>
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-8 text-center">
+                            <p>
+                                This type of deeplink will open confirmation page for the transaction created with the CBOR string below.
+                            </p>
+                            <p>
+                                Enter CBOR string:
+                            </p>
+                            <p>
+                                <textarea autocapitalize="off" class="field long-field auto-expand" type='text' name='CBOR' id='CBOR'></textarea>
+                            </p>
+                            <p style="margin-bottom: 4px;">Select coin type:</p>
+                                <input type="radio" id="cardanoCoinTypeSign" name="coinType" value="cardano" checked onchange="handleCoinTypeCheck()">
+                                <label for="cardanoCoinTypeSign">Cardano</label>
+                                <span>&nbsp;</span>
+                                <input type="radio" id="ethereumCoinTypeSign" name="coinType" value="ethereum" onchange="//handleCoinTypeCheck()" disabled>
+                                <label for="ethereumCoinTypeSign">Milkomeda (Coming soon)</label><br>
+                            <p>
+                            <p>
+                                <select id="cardanoNetworksSign" name="networks" class="field short-field" placeholder="Select network" onchange="handleNetworkSelect()">
+                                    <option value="placeholder">Select network</option>
+                                    <option value="cardanoMainnet">Cardano Mainnet</option>
+                                    <option value="cardanoTestnet">Cardano Testnet</option>
+                                </select>
+                            </p>
+                            <p>
+                                <select id="ethereumNetworksSign" name="networks" class="field short-field" placeholder="Select network" onchange="handleNetworkSelect()" style="display: none;">
+                                    <option value="placeholder">Select network</option>
+                                    <option value="milkomedaMainnet">Milkomeda Mainnet</option>
+                                    <option value="milkomedaTestnet">Milkomeda Testnet</option>
+                                </select>
+                            </p>
+                            <p>
+                                <input autocapitalize="off" class="field short-field" type='text' name='networkIdSign' id='networkIdSign' placeholder='Network ID' disabled style="display: none;"/>
+                            </p>
+                            <p>
+                                <input autocapitalize="off" class="field long-field" type='text' name='identifierSign' id='identifierSign' placeholder='Identifier' disabled style="display: none;"/>
+                            </p>
+                        </div>                        
+                        <div class="col-md-2"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <p>
+                                <a href="javascript:void(0)" class="btn btn-flint" onclick="generateSignUrl()">Generate URL</a>
                             </p>
                         </div>
                     </div>

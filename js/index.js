@@ -24,6 +24,19 @@ function renderUrl(url) {
   }
 }
 
+function getScrollHeight(element) {
+  var savedValue = element.value.replace(/\s/g, "")
+  element.value = ""
+  element._baseScrollHeight = element.scrollHeight
+  element.value = savedValue
+}
+
+window.onExpandableTextareaInput = function ({ target: element }) {
+  !element._baseScrollHeight && getScrollHeight(element)
+  rows = Math.ceil((element.scrollHeight - element._baseScrollHeight) / 20)
+  element.rows = rows
+}
+
 window.handleNetworkSelect = function () {
   let activeForm = ""
   if (document.getElementById("send-form").style.display == "block") {
@@ -192,11 +205,46 @@ window.generateDappUrl = function () {
   }
 }
 
+window.generateSignUrl = function () {
+  const CBOR = document.getElementById("CBOR").value.trim()
+  const networkId = document.getElementById("networkIdSign").value
+
+  if (networkId === "") {
+    alert("Network not selected")
+    return
+  }
+
+  let coinType
+
+  if (document.getElementById("cardanoCoinTypeSign").checked) {
+    coinType = document.getElementById("cardanoCoinTypeSign").value
+    // TODO: Enable when eth is supported
+    // } else if (document.getElementById("ethereumCoinTypeSign").checked) {
+    //   coinType = document.getElementById("ethereumCoinTypeSign").value
+  } else {
+    alert("Invalid coin type")
+    return
+  }
+  const url =
+    `${BASE_URL}/sign?` +
+    "CBOR=" +
+    CBOR +
+    "&networkId=" +
+    networkId +
+    "&coinType=" +
+    coinType
+  renderUrl(url)
+}
+
 window.showView = function (name) {
   if (name === "dapp") {
     document.getElementById("dapp-form").style.display = "block"
   } else if (name === "send") {
     document.getElementById("send-form").style.display = "block"
+  } else if (name === "sign") {
+    document.getElementById("sign-form").style.display = "block"
+  } else {
+    alert("Not implemented")
   }
   document.getElementById("buttons").style.display = "none"
 }
@@ -205,3 +253,6 @@ window.showView = function (name) {
 window.isValidAddress = function (address) {
   return address.length === 42 && address.toLowerCase().substr(0, 2) === "0x"
 }
+
+// For textarea to auto expand
+document.addEventListener("input", onExpandableTextareaInput)
